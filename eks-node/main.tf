@@ -171,9 +171,9 @@ resource "aws_launch_template" "node_template" {
 
 resource "aws_autoscaling_group" "node_asg" {
   vpc_zone_identifier= concat(var.public_subnet_ids, var.private_subnet_ids)
-  desired_capacity   = 1
-  min_size           = 1
-  max_size           = 30
+  desired_capacity   = var.autoscale_configs.desired_capacity
+  min_size           = var.autoscale_configs.min_size
+  max_size           = var.autoscale_configs.max_size
   name               = "k8s_${var.node_name}_nodes"
   enabled_metrics    = [
     "GroupAndWarmPoolDesiredCapacity", "GroupAndWarmPoolTotalCapacity", "GroupDesiredCapacity",
@@ -187,8 +187,8 @@ resource "aws_autoscaling_group" "node_asg" {
 
   mixed_instances_policy {
     instances_distribution {
-      on_demand_base_capacity                  = 0
-      on_demand_percentage_above_base_capacity = 50
+      on_demand_base_capacity                  = var.autoscale_configs.on_demand_base_capacity
+      on_demand_percentage_above_base_capacity = var.autoscale_configs.on_demand_percentage_capacity
       spot_allocation_strategy                 = "capacity-optimized"
     }
 
