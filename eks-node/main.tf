@@ -150,7 +150,7 @@ resource "aws_iam_instance_profile" "worker_nodes" {
 resource "aws_launch_template" "node_template" {
   name_prefix            = "${var.cluster_name}_${var.node_name}_nodes"
   image_id               = data.aws_ssm_parameter.ami.value
-  instance_type          = "t3.large"
+  instance_type          = var.instance_types[0]
   user_data              = base64encode(local.node)
   vpc_security_group_ids = [
     aws_security_group.node_ssh.id,
@@ -199,22 +199,8 @@ resource "aws_autoscaling_group" "node_asg" {
       }
 
       override {
-        instance_type     = "t3.large"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "t3a.large"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "m5.large"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "c5.xlarge"
+        for_each          = var.instance_types
+        instance_type     = each.value
         weighted_capacity = "1"
       }
     }
