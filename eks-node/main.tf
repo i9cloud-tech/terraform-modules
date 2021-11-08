@@ -203,7 +203,7 @@ resource "aws_autoscaling_group" "node_asg" {
       }
 
       override {
-        for_each          = var.instance_types
+        for_each          = toset(var.instance_types)
         instance_type     = each.value
         weighted_capacity = "1"
       }
