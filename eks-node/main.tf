@@ -214,7 +214,7 @@ resource "aws_autoscaling_group" "node_asg" {
 
   tags = concat([{
     key   = "Name"
-    value = "k8s_${node_name}_nodes"
+    value = "k8s_${var.node_name}_nodes"
     propagate_at_launch = "true"
   }, {
     key   = "k8s.io/cluster-autoscaler/aws_eks_cluster.cluster.name"
