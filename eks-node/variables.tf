@@ -2,10 +2,6 @@ variable "cluster" {
   type = map
 }
 
-variable "cluster_name" {
-  type = string
-}
-
 variable "node_name" {
   type = string
 }

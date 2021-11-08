@@ -16,7 +16,7 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 resource "aws_iam_role" "eks_node" {
-  name = "${var.cluster_name}_nodes"
+  name = "${var.cluster.name}_nodes"
 
   assume_role_policy = jsonencode({
     Statement = [{
