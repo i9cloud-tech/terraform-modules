@@ -165,6 +165,15 @@ resource "aws_launch_template" "node_template" {
     arn = aws_iam_instance_profile.worker_nodes.arn
   }
 
+  block_device_mappings {
+    device_name = "/dev/xvda"
+
+    ebs {
+      volume_size = 40
+      delete_on_termination = true
+    }
+  }
+
   tags = {
     Name = "k8s_${var.node_name}_nodes"
     "k8s.io/cluster-autoscaler/aws_eks_cluster.cluster.name" = "owned"
