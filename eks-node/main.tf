@@ -2,8 +2,8 @@ locals {
   node = templatefile("${path.module}/userdata.tpl", {
     node_group_name = "${var.node_name}_node",
     label           = var.node_name
-    cluster_ca      = aws_eks_cluster.cluster.certificate_authority[0].data
-    api_url         = aws_eks_cluster.cluster.endpoint
+    cluster_ca      = var.cluster.certificate_authority[0].data
+    api_url         = var.cluster.endpoint
     instance_type   = data.aws_ssm_parameter.ami.value
     efs             = aws_efs_file_system.bi_efs.dns_name
   })
@@ -154,7 +154,7 @@ resource "aws_launch_template" "node_template" {
   user_data              = base64encode(local.node)
   vpc_security_group_ids = [
     aws_security_group.node_ssh.id,
-    aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
+    var.cluster.vpc_config[0].cluster_security_group_id
   ]
   key_name               = "k8s_key"
   iam_instance_profile {

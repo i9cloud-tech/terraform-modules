@@ -1,3 +1,7 @@
+variable "cluster" {
+  type = map
+}
+
 variable "cluster_name" {
   type = string
 }
