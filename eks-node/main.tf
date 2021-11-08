@@ -202,10 +202,12 @@ resource "aws_autoscaling_group" "node_asg" {
         version = "$Latest"
       }
 
-      override {
-        for_each          = toset(var.instance_types)
-        instance_type     = each.key
-        weighted_capacity = "1"
+      dynamic "override" {
+        for_each = toset(var.instance_types)
+
+        override {
+          instance_type = override.value
+        }
       }
     }
   }
