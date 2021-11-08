@@ -9,7 +9,7 @@ locals {
     cluster_ca      = var.cluster.certificate_authority[0].data
     api_url         = var.cluster.endpoint
     instance_type   = data.aws_ssm_parameter.ami.value
-    efs             = aws_efs_file_system.bi_efs.dns_name
+    efs             = aws_efs_file_system.node_efs.dns_name
   })
 }
 
