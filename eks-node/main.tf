@@ -1,3 +1,7 @@
+data "aws_ssm_parameter" "ami" {
+  name = "/aws/service/eks/optimized-ami/1.20/amazon-linux-2/recommended/image_id"
+}
+
 locals {
   node = templatefile("${path.module}/userdata.tpl", {
     node_group_name = "${var.node_name}_node",
