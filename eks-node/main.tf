@@ -205,7 +205,7 @@ resource "aws_autoscaling_group" "node_asg" {
       dynamic "override" {
         for_each = toset(var.instance_types)
 
-        override {
+        content {
           instance_type = override.value
         }
       }
