@@ -40,7 +40,7 @@ resource "aws_efs_access_point" "node_ap" {
 }
 
 resource "aws_security_group" "node_ssh" {
-  name  = "${var.node_name}_node_ssh"
+  name  = "${var.cluster.name}_${var.node_name}_node_ssh"
   description = "Allows ssh access from an specific instance"
   vpc_id      = var.vpc_id
 
@@ -60,12 +60,12 @@ resource "aws_security_group" "node_ssh" {
   }
 
   tags = {
-    Name = "${var.node_name}_node_ssh"
+    Name = "${var.cluster.name}_${var.node_name}_node_ssh"
   }
 }
 
 resource "aws_security_group" "node_efs" {
-  name  = "${var.node_name}_node_efs"
+  name  = "${var.cluster.name}_${var.node_name}_node_efs"
   description = "Allows efs mount from anywhere in vpc"
   vpc_id      = var.vpc_id
 
@@ -85,7 +85,7 @@ resource "aws_security_group" "node_efs" {
   }
 
   tags = {
-    Name = "${var.node_name}_node_efs"
+    Name = "${var.cluster.name}_${var.node_name}_node_efs"
   }
 }
 
@@ -147,7 +147,7 @@ resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
 }
 
 resource "aws_iam_instance_profile" "worker_nodes" {
-  name = "${var.node_name}_worker_nodes"
+  name = "${var.cluster.name}_${var.node_name}_worker_nodes"
   role = aws_iam_role.node_role.name
 }
 
@@ -175,7 +175,7 @@ resource "aws_launch_template" "node_template" {
   }
 
   tags = {
-    Name = "k8s_${var.node_name}_nodes"
+    Name = "${var.cluster.name}_${var.node_name}_nodes"
     "k8s.io/cluster-autoscaler/aws_eks_cluster.cluster.name" = "owned"
     "k8s.io/cluster-autoscaler/enabled" = "true"
     "kubernetes.io/cluster/cluster"  = "owned"
@@ -187,7 +187,7 @@ resource "aws_autoscaling_group" "node_asg" {
   desired_capacity   = var.autoscale_configs.desired_capacity
   min_size           = var.autoscale_configs.min_size
   max_size           = var.autoscale_configs.max_size
-  name               = "k8s_${var.node_name}_nodes"
+  name               = "${var.cluster.name}_${var.node_name}_nodes"
   enabled_metrics    = [
     "GroupAndWarmPoolDesiredCapacity", "GroupAndWarmPoolTotalCapacity", "GroupDesiredCapacity",
     "GroupInServiceCapacity",          "GroupInServiceInstances",       "GroupMaxSize",
@@ -223,7 +223,7 @@ resource "aws_autoscaling_group" "node_asg" {
 
   tags = concat([{
     key   = "Name"
-    value = "k8s_${var.node_name}_nodes"
+    value = "${var.cluster.name}_${var.node_name}_nodes"
     propagate_at_launch = "true"
   }, {
     key   = "k8s.io/cluster-autoscaler/aws_eks_cluster.cluster.name"
