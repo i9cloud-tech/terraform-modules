@@ -1,5 +1,5 @@
 resource "aws_security_group" "allow_ssh" {
-  name  = "allow_ssh"
+  name  = "${var.cluster.name}_${var.node_name}_ssh"
   description = "Allows ssh access from an specific instance"
   vpc_id      = var.vpc_id
 
@@ -11,12 +11,12 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   tags = {
-    Name = "allow_ssh"
+    Name = "${var.cluster.name}_${var.node_name}_ssh"
   }
 }
 
 resource "aws_iam_role" "eks_node" {
-  name = "${var.cluster.name}_nodes"
+  name = "${var.cluster.name}_${var.node_name}_nodes"
 
   assume_role_policy = jsonencode({
     Statement = [{
