@@ -8,7 +8,7 @@ set -ex
 set -o xtrace
 B64_CLUSTER_CA=${cluster_ca}
 API_SERVER_URL=${api_url}
-/etc/eks/bootstrap.sh ck_cluster --kubelet-extra-args \
+/etc/eks/bootstrap.sh ${cluster_name} --kubelet-extra-args \
   '--node-labels=eks.amazonaws.com/nodegroup-image=${instance_type},eks.amazonaws.com/nodegroup=${node_group_name},infra=${label}' \
   --b64-cluster-ca $B64_CLUSTER_CA \
   --apiserver-endpoint $API_SERVER_URL

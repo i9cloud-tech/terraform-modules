@@ -7,6 +7,7 @@ locals {
     node_group_name = "${var.node_name}_node",
     label           = var.node_name
     cluster_ca      = var.cluster.ca
+    cluster_name    = var.cluster.name
     api_url         = var.cluster.endpoint
     instance_type   = data.aws_ssm_parameter.ami.value
     efs             = aws_efs_file_system.node_efs.dns_name
