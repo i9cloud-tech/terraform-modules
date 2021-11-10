@@ -10,7 +10,7 @@ locals {
     cluster_name    = var.cluster.name
     api_url         = var.cluster.endpoint
     instance_type   = data.aws_ssm_parameter.ami.value
-    efs             = aws_efs_file_system.node_efs.dns_name
+    efs             = aws_efs_file_system.node_efs.id
   })
 }
 
@@ -24,15 +24,10 @@ resource "aws_efs_file_system" "node_efs" {
   }
 }
 
-resource "aws_efs_mount_target" "node_subnet1" {
+resource "aws_efs_mount_target" "subnets" {
   file_system_id  = aws_efs_file_system.node_efs.id
-  subnet_id       = var.public_subnet_ids[0]
-  security_groups = [aws_security_group.node_efs.id]
-}
-
-resource "aws_efs_mount_target" "node_subnet2" {
-  file_system_id = aws_efs_file_system.node_efs.id
-  subnet_id      = var.public_subnet_ids[1]
+  count           = length(var.public_subnet_names)
+  subnet_id       = var.public_subnet_ids[count.index]
   security_groups = [aws_security_group.node_efs.id]
 }
 
