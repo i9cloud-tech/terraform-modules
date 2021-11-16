@@ -86,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "node_eks_ecr" {
   role       = aws_iam_role.node_role.name
 }
 resource "aws_iam_role_policy_attachment" "node_eks_waf" {
-  policy_arn = "arn:aws:iam::aws:policy/AWSWAFConsoleReadOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AWSWAFFullAccess"
   role       = aws_iam_role.node_role.name
 }
 
