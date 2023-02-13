@@ -1,7 +1,6 @@
-resource "aws_ecs_cluster" "aws-ecs-cluster" {
-  name = "${var.app_name}-${var.app_environment}-cluster"
+resource "aws_ecs_cluster" "aws_ecs_cluster" {
+  name = "${var.cluster_name}-${var.environment}-cluster"
   tags = {
-    Name        = "${var.app_name}-ecs"
-    Environment = var.app_environment
+    Name = "${var.cluster_name}-ecs"
   }
 }

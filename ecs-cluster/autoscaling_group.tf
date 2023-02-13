@@ -9,8 +9,8 @@ data "aws_ami" "ecs_ami" {
 }
 
 locals {
-  userdata = templatefile("${path.modulo}/userdata.tpl", {
-    cluster_name = aws_ecs_cluster.main.name
+  userdata = templatefile("${path.module}/userdata.tpl", {
+    cluster_name = aws_ecs_cluster.aws_ecs_cluster.name
   })
 }
 
