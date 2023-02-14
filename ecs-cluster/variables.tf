@@ -45,3 +45,8 @@ variable "security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "key_name" {
+  type        = string
+  description = "The instance key pair name"
+}
