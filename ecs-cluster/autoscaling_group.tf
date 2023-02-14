@@ -21,7 +21,7 @@ resource "aws_launch_configuration" "main" {
 
   instance_type               = var.instance_type
   image_id                    = data.aws_ami.ecs_ami.image_id
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   security_groups             = concat(var.security_group_ids, [aws_security_group.main.id])
 
   root_block_device {
