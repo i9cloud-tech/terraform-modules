@@ -66,6 +66,24 @@ resource "aws_iam_role" "node_role" {
   })
 }
 
+resource "aws_iam_policy" "certificate_descover" {
+  name        = "${var.cluster.name}-${var.node_name}-certs-descover"
+  path        = "/"
+  description = "Enbable nodes to descover aws certificates"
+  policy      = jsonencode({
+    Version   = "2012-10-17",
+    Statement = [{
+      Sid      = "Statement1",
+      Effect   = "Allow",
+      Action   = [
+          "acm:List*",
+          "acm:Describe*"
+      ],
+      Resource = ["*"]
+    }]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "node_eks_worker" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.node_role.name
@@ -108,4 +126,8 @@ resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
 resource "aws_iam_instance_profile" "worker_nodes" {
   name = "${var.cluster.name}-${var.node_name}-worker-nodes"
   role = aws_iam_role.node_role.name
+}
+resource "aws_iam_role_policy_attachment" "certificate_descover" {
+  policy_arn = aws_iam_policy.certificate_descover.arn
+  role       = aws_iam_role.node_role.name
 }
