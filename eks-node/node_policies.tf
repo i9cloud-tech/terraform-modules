@@ -1,13 +1,13 @@
 resource "aws_security_group" "node_ssh" {
-  name  = "${var.cluster.name}_${var.node_name}_node_ssh"
+  name  = "${var.cluster.name}-${var.node_name}-node-ssh"
   description = "Allows ssh access from an specific instance"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["10.6.0.0/16"]
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
   }
 
   egress {
@@ -19,12 +19,12 @@ resource "aws_security_group" "node_ssh" {
   }
 
   tags = {
-    Name = "${var.cluster.name}_${var.node_name}_node_ssh"
+    Name = "${var.cluster.name}-${var.node_name}-node-ssh"
   }
 }
 
 resource "aws_security_group" "node_efs" {
-  name  = "${var.cluster.name}_${var.node_name}_node_efs"
+  name  = "${var.cluster.name}-${var.node_name}-node-efs"
   description = "Allows efs mount from anywhere in vpc"
   vpc_id      = var.vpc_id
 
@@ -32,7 +32,7 @@ resource "aws_security_group" "node_efs" {
     from_port = 2049
     to_port   = 2049
     protocol  = "tcp"
-    cidr_blocks = ["10.6.0.0/16"]
+    cidr_blocks = [var.vpc_cidr_block]
   }
 
   egress {
@@ -44,12 +44,12 @@ resource "aws_security_group" "node_efs" {
   }
 
   tags = {
-    Name = "${var.cluster.name}_${var.node_name}_node_efs"
+    Name = "${var.cluster.name}-${var.node_name}-node-efs"
   }
 }
 
 resource "aws_iam_role" "node_role" {
-  name = "${var.cluster.name}_${var.node_name}_nodes"
+  name = "${var.cluster.name}-${var.node_name}-nodes"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -106,6 +106,6 @@ resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
 }
 
 resource "aws_iam_instance_profile" "worker_nodes" {
-  name = "${var.cluster.name}_${var.node_name}_worker_nodes"
+  name = "${var.cluster.name}-${var.node_name}-worker-nodes"
   role = aws_iam_role.node_role.name
 }

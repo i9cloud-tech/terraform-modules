@@ -6,19 +6,26 @@ variable "node_name" {
   type = string
 }
 
-variable "public_subnet_names" {
+variable "node_label_key" {
+  type    = string
+  default = "Environment"
+}
+
+variable "node_label_value" {
+  type    = string
+  default = ""
+}
+
+variable "instance_version" {
+  type    = string
+  default = "1.22"
+}
+
+variable "private_subnets" {
   type = list(string)
 }
 
-variable "private_subnet_names" {
-  type = list(string)
-}
-
-variable "public_subnet_ids" {
-  type = list(string)
-}
-
-variable "private_subnet_ids" {
+variable "public_subnets" {
   type = list(string)
 }
 
@@ -26,8 +33,16 @@ variable "vpc_id" {
   type = string
 }
 
+variable "vpc_cidr_block" {
+  type = string
+}
+
 variable "instance_types" {
   type = list(string)
+}
+
+variable "ssh_key_name" {
+  type = string
 }
 
 variable "autoscale_configs" {
