@@ -123,6 +123,11 @@ resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
   role       = aws_iam_role.node_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  role       = aws_iam_role.node_role.name
+}
+
 resource "aws_iam_instance_profile" "worker_nodes" {
   name = "${var.cluster.name}-${var.node_name}-worker-nodes"
   role = aws_iam_role.node_role.name
