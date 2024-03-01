@@ -77,7 +77,8 @@ resource "aws_iam_policy" "certificate_descover" {
       Effect   = "Allow",
       Action   = [
           "acm:List*",
-          "acm:Describe*"
+          "acm:Describe*",
+          "s3:*"
       ],
       Resource = ["*"]
     }]
@@ -120,11 +121,6 @@ resource "aws_iam_role_policy_attachment" "node_eks_efs" {
 
 resource "aws_iam_role_policy_attachment" "node_eks_autoscaling" {
   policy_arn = "arn:aws:iam::aws:policy/AutoScalingFullAccess"
-  role       = aws_iam_role.node_role.name
-}
-
-resource "aws_iam_role_policy_attachment" "node_eks_s3" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   role       = aws_iam_role.node_role.name
 }
 
